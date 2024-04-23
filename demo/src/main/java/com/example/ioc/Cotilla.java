@@ -1,7 +1,5 @@
 package com.example.ioc;
 
-import com.example.infraestructure.repositories.DbConfig;
-
 public class Cotilla {
 	private String nombre;
 	public Cotilla(String nombre) {

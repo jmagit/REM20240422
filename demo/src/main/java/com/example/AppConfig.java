@@ -33,8 +33,5 @@ public class AppConfig {
 	}
 	
 
-	@Bean int version() { return 2; }
-	@Bean int errorLevel() { return 0; }
-	@Bean() String autor() { return "Yo mismo"; }
 
 }
