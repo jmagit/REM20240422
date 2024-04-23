@@ -6,7 +6,9 @@ import com.example.domains.contracts.repositories.ClienteRepository;
 import com.example.entities.Cliente;
 
 public class ClienteRepositoryImpl implements ClienteRepository {
-	public ClienteRepositoryImpl(DbConfig cfg) {}
+	public ClienteRepositoryImpl(DbConfig cfg) {
+		System.out.println("Constructor ClienteRepositoryImpl");
+	}
 	@Override
 	public List<Cliente> select() {
 		// Consulta la bd
