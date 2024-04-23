@@ -9,6 +9,7 @@ public class ClienteService {
 	public ClienteService(ClienteRepository dao) {
 		super();
 		this.dao = dao;
+		System.out.println("Constructor ClienteService");
 	}
 	
 	public Cliente add(Cliente item) {

@@ -6,6 +6,9 @@ import com.example.domains.contracts.repositories.ClienteRepository;
 import com.example.entities.Cliente;
 
 public class ClienteRepositoryMock implements ClienteRepository {
+	public ClienteRepositoryMock() {
+		System.out.println("Constructor ClienteRepositoryMock");
+	}
 	@Override
 	public List<Cliente> select() {
 		System.out.println("Simula la bd");
