@@ -68,7 +68,15 @@ public class DemoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		System.err.println("Aplicacion arrancada");
-		
+		demosAOP();
+	}
+	
+	public void demosAOP() throws Exception {
+		var cliente = new Cliente();
+		srv.add(cliente);
+	
+	}
+	public void demosIoC() throws Exception {
 		var cliente = new Cliente();
 //		ClienteRepository repository = new ClienteRepositoryImpl(new DbConfig());
 //		repository = new ClienteRepositoryMock();
