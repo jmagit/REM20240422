@@ -9,11 +9,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.env.Environment;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.example.aop.Visible;
 import com.example.domains.contracts.repositories.ClienteRepository;
 import com.example.domains.contracts.services.ClienteService;
 import com.example.domains.contracts.services.EducadoService;
@@ -28,25 +30,35 @@ import com.example.ioc.Rango;
 import jakarta.el.Expression;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class DemoApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
-	@Bean int version() { return 222; }
-	@Bean int errorLevel() { return 0; }
-	@Bean() String autor() { return "Yo mismo"; }
 
-	@Autowired
-	private ClienteService srv;
-	
+	@Bean
+	int version() {
+		return 222;
+	}
+
+	@Bean
+	int errorLevel() {
+		return 0;
+	}
+
+	@Bean()
+	String autor() {
+		return "Yo mismo";
+	}
+
 	@Autowired
 	private EducadoService malEducadoService;
 
 	@Autowired
 	@Qualifier("prod")
 	private Cotilla otro;
-	
+
 	@Autowired(required = false)
 	@Lazy
 	private EjemplosIoC demo;
@@ -58,24 +70,37 @@ public class DemoApplication implements CommandLineRunner {
 
 	@Value("#{'${spring.application.name}'.toUpperCase()}")
 	String nombre;
-	
+
 	@Autowired
 	private Rango rango;
-	
-	@Autowired 
+
+	@Autowired
 	private Environment env;
+
+	@Autowired
+	private ClienteService srv;
 
 	@Override
 	public void run(String... args) throws Exception {
 		System.err.println("Aplicacion arrancada");
 		demosAOP();
 	}
-	
+
 	public void demosAOP() throws Exception {
 		var cliente = new Cliente();
-		srv.add(cliente);
-	
+		cliente.setNombre("Pepito");
+		cliente = srv.add(cliente);
+		if (srv instanceof Visible)
+			System.out.println("Implementa visible");
+		((Visible) srv).mostrar();
+		System.out.println("Ahora " + (((Visible) srv).isVisible() ? "" : "NO ") + "me ves");
+		((Visible) srv).ocultar();
+		System.out.println("Ahora " + (((Visible) srv).isVisible() ? "" : "NO ") + "me ves");
+		System.out.println(cliente);
+//		System.out.println(srv.getClass().getCanonicalName());
+
 	}
+
 	public void demosIoC() throws Exception {
 		var cliente = new Cliente();
 //		ClienteRepository repository = new ClienteRepositoryImpl(new DbConfig());
@@ -88,7 +113,7 @@ public class DemoApplication implements CommandLineRunner {
 //		malEducadoService.despide();
 //		//System.out.println(demo == null ? "No lo encuentro" : demo.toString());
 //		System.out.println(otro);
-		
+
 //		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 //		ctx.getEnvironment().setActiveProfiles("test");
 //		ctx.refresh();	

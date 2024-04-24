@@ -3,6 +3,7 @@ package com.example.domains.services;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.example.aop.Cerrado;
 import com.example.domains.contracts.repositories.ClienteRepository;
 import com.example.domains.contracts.services.ClienteService;
 import com.example.entities.Cliente;
@@ -18,6 +19,7 @@ public class ClienteServiceImpl implements ClienteService {
 	}
 	
 	@Override
+	@Cerrado
 	public Cliente add(Cliente item) {
 		// validar cliente
 		var cliente = dao.insert(item);

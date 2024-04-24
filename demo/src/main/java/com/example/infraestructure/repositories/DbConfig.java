@@ -3,6 +3,8 @@ package com.example.infraestructure.repositories;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.example.aop.Cerrado;
+
 import jakarta.annotation.PostConstruct;
 
 @Component
@@ -19,6 +21,7 @@ public class DbConfig {
 		System.out.println("Me conecto a la bd");
 	}
 	
+	@Cerrado
 	public void inc() {
 		cont++;
 	}
