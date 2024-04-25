@@ -25,6 +25,8 @@ import com.example.domains.contracts.services.ClienteService;
 import com.example.domains.contracts.services.EducadoService;
 import com.example.entities.Actor;
 import com.example.entities.Cliente;
+import com.example.entities.dtos.ActorDTO;
+import com.example.entities.dtos.ActorSort;
 import com.example.ioc.Cotilla;
 import com.example.ioc.EjemplosIoC;
 import com.example.ioc.Rango;
@@ -86,10 +88,9 @@ public class DemoApplication implements CommandLineRunner {
 		demosSpringData();
 	}
 
-
 	@Autowired
 	ActorRepository dao;
-	
+
 	public void demosSpringData() throws Exception {
 //		var a = new Actor("Pepito", "Grillo");
 //		dao.save(a);
@@ -106,14 +107,24 @@ public class DemoApplication implements CommandLineRunner {
 //		System.out.println(dao.count());
 //		dao.findTop5ByFirstNameStartingWithOrderByLastNameDesc("P").forEach(System.out::println);
 //		dao.findByActorIdGreaterThanEqual(200).forEach(System.out::println);
-		dao.findConJPA(200).forEach(System.out::println);
+//		dao.findConJPA(200).forEach(System.out::println);
 //		dao.findConSQL(200).forEach(System.out::println);
 //		dao.findAll(PageRequest.of(1, 10)).forEach(System.out::println);
 //		dao.findByActorIdGreaterThanEqual(10, PageRequest.of(1, 10)).forEach(System.out::println);
 //		dao.findTop5ByFirstNameStartingWith("P", Sort.by("actorId")).forEach(System.out::println);
 //		dao.findConSQL(2, PageRequest.of(5, 10)).forEach(System.out::println);
-		dao.findAll((root, query, builder) -> builder.lessThan(root.get("actorId"), 10))
-			.forEach(System.out::println);
+//		dao.findAll((root, query, builder) -> builder.lessThan(root.get("actorId"), 10))
+//			.forEach(System.out::println);
+//		var a = new Actor(null, "GG");
+//		if (a.isValid()) {
+//			dao.save(a);
+//		} else {
+//			System.err.println(a.getErrorsMessage());
+//		}
+//		dao.findBy().forEach(System.out::println);
+		//dao.findBy().forEach(item -> System.out.println(item.getActorId() + " " + item.getNombre()));
+		dao.findBy(ActorDTO.class).forEach(System.out::println);
+		dao.findBy(ActorSort.class).forEach(item -> System.out.println(item.getId() + " " + item.getNombre()));
 	}
 
 	@Autowired
@@ -128,7 +139,7 @@ public class DemoApplication implements CommandLineRunner {
 			return newActor;
 		}
 	}
-	
+
 	public void demosJDBC() throws Exception {
 		int rowCount = this.jdbcTemplate.queryForObject("select count(*) from actor", Integer.class);
 		System.out.println(rowCount);
@@ -151,8 +162,8 @@ public class DemoApplication implements CommandLineRunner {
 //		        "GRILLO", 201L);
 //		jdbcTemplate.update("delete from actor where actor_id = ?", 1L);
 
-		List<Actor> actors = this.jdbcTemplate.query("select first_name, last_name from actor where first_name like ? LIMIT 3",
-				new ActorRowMapper(), "P%");
+		List<Actor> actors = this.jdbcTemplate.query(
+				"select first_name, last_name from actor where first_name like ? LIMIT 3", new ActorRowMapper(), "P%");
 		actors.forEach(System.out::println);
 	}
 
