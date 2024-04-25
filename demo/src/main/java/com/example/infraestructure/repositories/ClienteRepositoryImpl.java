@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.domains.contracts.repositories.ClienteRepository;
 import com.example.entities.Cliente;
@@ -43,6 +44,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 		delete(item.getId());
 	}
 	@Override
+	@Transactional
 	public void delete(int id) {
 		// Borrar en bd
 	}
